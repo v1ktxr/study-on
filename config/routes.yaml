@@ -1,0 +1,15 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+about:
+  path: /about
+  controller: App\Controller\AboutController::index
+
+course:
+  path: /courses
+  controller: App\Controller\CourseController::index
+
+
+course_new:  
+  path: /course/new
+  controller: App\COntroller\CourseController::new
