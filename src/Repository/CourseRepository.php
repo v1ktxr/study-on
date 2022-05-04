@@ -6,6 +6,7 @@ use App\Entity\Course;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,12 +54,82 @@ class CourseRepository extends ServiceEntityRepository
             FROM App\Entity\Course c
             '
         );
-        $course2 = new Course();
-        $course2->setSymbolicCode("01B");
-        $course2->setTitle("Курс программирования");
-        $course2->setDescription("Курс для обучения программирования на языке Python");
-
+        
         return $query->getResult();
+    }
+
+    public function findAllForTests(): array {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c
+            FROM App\Entity\Course c
+            '
+        );
+        
+        return $query->getResult(Query::HYDRATE_ARRAY);
+    }
+
+    public function findAllLessonsByCourseId(int $id) {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c, l
+            FROM App\Entity\Course c
+            INNER JOIN c.lessons l
+            WHERE c.id = :id
+            '
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function findAllLessonsByCourseIdForTest(int $id) {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c, l
+            FROM App\Entity\Course c
+            INNER JOIN c.lessons l
+            WHERE c.id = :id
+            '
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult(Query::HYDRATE_ARRAY);
+    }
+
+    public function findById(int $id) {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c
+            FROM App\Entity\Course c
+            WHERE c.id = :id
+            '
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function deleteCourseWithLessonsById(int $id) {
+        $entityManager = $this->getEntityManager();
+
+        $courseDeleteQuery = $entityManager->createQuery(
+            'DELETE
+            FROM App\Entity\Course c
+            WHERE c.id = :id
+            '
+        )->setParameter('id', $id);
+
+        $lessonsDeleteQuery = $entityManager->createQuery(
+            'DELETE
+            FROM App\Entity\Lesson l
+            WHERE l.course = :id
+            '
+        )->setParameter('id', $id);
+
+        $lessonsDeleteQuery->execute();
+        $courseDeleteQuery->execute();
     }
 
     // /**

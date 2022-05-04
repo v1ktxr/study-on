@@ -5,6 +5,10 @@ namespace App\Entity;
 use App\Repository\LessonRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 /**
  * @ORM\Entity(repositoryClass=LessonRepository::class)
  */
@@ -89,5 +93,17 @@ class Lesson
         $this->number = $number;
 
         return $this;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        //$metadata->addPropertyConstraint('number', Assert\LessThanOrEqual(10000));
+
+        $metadata->addPropertyConstraint('number', new Assert\LessThanOrEqual([
+            'value' => 10000,
+        ]));
+        $metadata->addPropertyConstraint('title', new NotBlank());
+        $metadata->addPropertyConstraint('content', new NotBlank());
+
     }
 }

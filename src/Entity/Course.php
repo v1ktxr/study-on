@@ -6,6 +6,11 @@ use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=CourseRepository::class)
@@ -35,7 +40,7 @@ class Course
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Lesson::class, mappedBy="course")
+     * @ORM\OneToMany(targetEntity=Lesson::class, mappedBy="course", cascade={"remove"})
      */
     private $lessons;
 
@@ -113,5 +118,22 @@ class Course
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->symbolic_code;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'symbolic_code',
+            'message' => 'Этот символьный код занят',
+        ]));
+        $metadata->addPropertyConstraint('symbolic_code', new NotBlank());
+        $metadata->addPropertyConstraint('title', new NotBlank());
+        $metadata->addPropertyConstraint('description', new NotBlank());
+
     }
 }

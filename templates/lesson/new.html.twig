@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Создание урока{% endblock %}
+
+{% block body %}
+    <h1>Создать урок</h1>
+    {{ include('lesson/_form.html.twig') }}
+    <hr class="my-12"/>
+    <a href="{{ path('app_lesson_index') }}"><button class="btn btn-primary w-100 btn-block">Вернуться к курсу</button></a>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lesson{% endblock %}
+
+{% block body %}
+    <h5> Название урока:  {{ lesson.title }} </h5>
+    <p class="lead"> Номер урока: {{ lesson.number }} </p>
+    <p class="lead"> {{ lesson.content }} </p>
+    <hr class="my-12"/>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{{ path('app_course_show', {'id': lesson.course.id}) }}">
+                <button class="btn btn-primary w-100 btn-block">К курсу</button>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_lesson_edit', {'id': lesson.id}) }}">
+                <button class="btn btn-primary w-100 btn-block">Изменить</button>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_lesson_delete', {'id': lesson.id}) }}">
+                <button class="btn btn-primary w-100 btn-block">Удалить</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

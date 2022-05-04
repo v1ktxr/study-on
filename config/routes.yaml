@@ -5,11 +5,64 @@ about:
   path: /about
   controller: App\Controller\AboutController::index
 
-course:
+app_main_page:
+  path: /
+  controller: App\Controller\MainPageController::index
+
+#courses routes
+courses:
   path: /courses
   controller: App\Controller\CourseController::index
 
-
 course_new:  
-  path: /course/new
-  controller: App\COntroller\CourseController::new
+  path: /courses/new
+  controller: App\Controller\CourseController::new
+
+app_course_show:
+  path: /courses/{id}
+  controller: App\Controller\CourseController::show
+
+app_course_edit:
+  path: /courses/{id}/edit
+  controller: App\Controller\CourseController::edit
+
+app_course_new:
+  path: /courses/new
+  controller: App\Controller\CourseController::new
+
+app_course_index:
+  path: /courses/
+  controller: App\Controller\CourseController::index
+
+app_course_delete:
+  path: /courses/delete/{id}
+  controller: App\Controller\CourseController::delete
+
+#lessons routes
+lessons:
+  path: /lessons
+  controller: App\Controller\LessonController::index
+
+lesson_new:  
+  path: /lessons/new/{course_id}
+  controller: App\Controller\LessonController::new
+
+app_lesson_show:
+  path: /lessons/{id}
+  controller: App\Controller\LessonController::show
+
+app_lesson_edit:
+  path: /lessons/{id}/edit
+  controller: App\Controller\LessonController::edit
+
+app_lesson_new:
+  path: /lessons/new
+  controller: App\Controller\LessonController::index
+
+app_lesson_index:
+  path: /lessons/
+  controller: App\Controller\LessonController::index
+
+app_lesson_delete:
+  path: /lessons/delete/{id}
+  controller: App\Controller\LessonController::delete

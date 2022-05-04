@@ -39,11 +39,38 @@ class LessonRepository extends ServiceEntityRepository
      */
     public function remove(Lesson $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
+        // $this->_em->remove($entity);
+        // $this->_em->flush();
+
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
     }
+
+    public function deleteById(int $id) {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'DELETE
+            FROM App\Entity\Lesson l
+            WHERE l.id = :id
+            '
+        )->setParameter('id', $id);
+
+        $query->execute();
+    }
+
+    public function findAll(): array {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT l
+            FROM App\Entity\Lesson l
+            '
+        );
+        
+        return $query->getResult();
+    }
+    
 
     // /**
     //  * @return Lesson[] Returns an array of Lesson objects

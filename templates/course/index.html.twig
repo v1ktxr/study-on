@@ -2,38 +2,28 @@
 
 {% block title %}Course index{% endblock %}
 
-{% block body %}
-    <h1>Course index</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('main') }}
+{% endblock %}
+{% block body %}    
+    <h1>Список курсов</h1>
+        {% for course in courses %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Symbolic_code</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {# {% for course in courses %}
-            <tr>
-                <td>{{ course.id }}</td>
-                <td>{{ course.symbolicCode }}</td>
-                <td>{{ course.title }}</td>
-                <td>{{ course.description }}</td>
-                <td>
-                    <a href="{{ path('app_course_show', {'id': course.id}) }}">show</a>
-                    <a href="{{ path('app_course_edit', {'id': course.id}) }}">edit</a>
-                </td>
-            </tr>
+        <div class="card" style="width: 18vw; height: 25vh; display:inline-block;">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description }}</p>
+                <a href="{{ path('app_course_show', {'id': course.id}) }}" class="btn btn-primary"> Смотреть </a>
+            </div>
+        </div>
         {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %} #}
-        </tbody>
-    </table>
-    <p>{{ dump(courses) }} </p>
-    {# <a href="{{ path('app_course_new') }}">Create new</a> #}
+                <p>Курсов не найдено</p>
+        {% endfor %}
+    <br>
+    <a href="{{ path('app_course_new') }}">
+        <button type="button" class="w-100 btn btn-lg btn-outline-primary">
+            Создать новый курс
+        </button>
+    </a>
 {% endblock %}
